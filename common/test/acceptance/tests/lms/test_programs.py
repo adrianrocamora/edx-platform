@@ -31,8 +31,6 @@ class ProgramPageBase(ProgramsConfigMixin, CatalogIntegrationMixin, UniqueCourse
             for course in program['courses']
             for course_run in course['course_runs']
         ]
-        import json
-        print(json.dumps(self.course_runs, indent=4))
         for pathway in self.pathways:
             self.programs += pathway['programs']
 
@@ -149,7 +147,9 @@ class ProgramListingPageA11yTest(ProgramPageBase):
             programs=[self.program],
             pathways=[],
             course_runs=[
-                course_run for course in self.program['courses'] for course_run in course['course_runs']
+                CourseRunFactory.create(programs=[ProgramDescriptionFactory.from_program(self.program)], **course_run)
+                for course in self.program['courses']
+                for course_run in course['course_runs']
             ]
         )
         self.cache_programs()
@@ -172,7 +172,9 @@ class ProgramListingPageA11yTest(ProgramPageBase):
             programs=[self.program],
             pathways=[],
             course_runs=[
-                course_run for course in self.program['courses'] for course_run in course['course_runs']
+                CourseRunFactory.create(programs=[ProgramDescriptionFactory.from_program(self.program)], **course_run)
+                for course in self.program['courses']
+                for course_run in course['course_runs']
             ]
         )
         self.cache_programs()
@@ -208,7 +210,9 @@ class ProgramDetailsPageA11yTest(ProgramPageBase):
             programs=[self.program],
             pathways=[],
             course_runs=[
-                course_run for course in self.program['courses'] for course_run in course['course_runs']
+                CourseRunFactory.create(programs=[ProgramDescriptionFactory.from_program(self.program)], **course_run)
+                for course in self.program['courses']
+                for course_run in course['course_runs']
             ]
         )
         self.cache_programs()

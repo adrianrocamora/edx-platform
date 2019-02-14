@@ -54,7 +54,7 @@ class StubCatalogServiceHandler(StubHttpRequestHandler):
         self.send_json_response(pathways)
 
     def course_runs(self):
-        course_runs = self.server.config.get('catalog.course_runs', [])
+        course_runs = self.server.config.get('catalog.course_runs', {'results': [], 'next': None})
         self.send_json_response(course_runs)
 
 
