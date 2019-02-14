@@ -217,7 +217,7 @@ class ProgramDescriptionFactory(DictFactoryBase):
     type = factory.Faker('word')
     marketing_slug = factory.Faker('slug')
     marketing_url = factory.Faker('url')
-    number_of_courses = fake.random_int(1, 10)
+    number_of_courses = fake.random_int(1, 10)  # pylint: disable=no-member
 
     @classmethod
     def from_program(cls, program):
