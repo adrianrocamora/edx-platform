@@ -371,10 +371,6 @@ class TestCachePrograms(CatalogIntegrationMixin, CacheIsolationTestCase, ModuleS
             PROGRAM_CACHE_KEY_TPL.format(uuid=program['uuid']): program for program in self.programs
         }
 
-        pathways = {
-            PATHWAY_CACHE_KEY_TPL.format(id=pathway['id']): pathway for pathway in self.pathways
-        }
-
         courses = {
             COURSE_PROGRAMS_CACHE_KEY_TPL.format(course_run_id=course['key']):
             [pu['uuid'] for pu in course['programs']]

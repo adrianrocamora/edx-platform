@@ -79,7 +79,7 @@ def check_catalog_integration_and_get_user(error_message_field):
         return None, catalog_integration
 
 
-def get_programs(site=None, uuid=None, course=None):
+def get_programs(site=None, uuid=None, course=None):  # pylint: disable=redefined-outer-name
     """Read programs from the cache.
 
     The cache is populated by a management command, cache_programs.
