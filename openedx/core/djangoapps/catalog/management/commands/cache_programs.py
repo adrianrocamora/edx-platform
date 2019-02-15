@@ -64,8 +64,13 @@ class Command(BaseCommand):
                                                                                           new_programs)
             new_courses, courses_failed = self.get_courses(client, site)
 
-            if program_uuids_failed or program_details_failed or pathways_failed or pathway_processing_failed or courses_failed:
-                failure = True
+            failure = any([
+                program_uuids_failed,
+                program_details_failed,
+                pathways_failed,
+                pathway_processing_failed,
+                courses_failed,
+            ])
 
             programs.update(new_programs)
             pathways.update(new_pathways)

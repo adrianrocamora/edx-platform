@@ -18,7 +18,6 @@ from openedx.core.djangolib.testing.utils import CacheIsolationTestCase, skip_un
 from student.tests.factories import UserFactory
 
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
-from xmodule.modulestore.tests.factories import CourseFactory
 
 
 @skip_unless_lms
@@ -332,10 +331,6 @@ class TestCachePrograms(CatalogIntegrationMixin, CacheIsolationTestCase, ModuleS
             PROGRAM_CACHE_KEY_TPL.format(uuid=program['uuid']): program for program in self.programs
         }
 
-        pathways = {
-            PATHWAY_CACHE_KEY_TPL.format(id=pathway['id']): pathway for pathway in self.pathways
-        }
-
         courses = {
             COURSE_PROGRAMS_CACHE_KEY_TPL.format(course_run_id=course['key']):
             [pu['uuid'] for pu in course['programs']]
@@ -511,19 +506,9 @@ class TestCachePrograms(CatalogIntegrationMixin, CacheIsolationTestCase, ModuleS
         """
         UserFactory(username=self.catalog_integration.service_username)
 
-        all_courses = {
-            COURSE_PROGRAMS_CACHE_KEY_TPL.format(course_run_id=course['key']):
-            [pu['uuid'] for pu in course['programs']]
-            for course in self.course_runs
-        }
-
-        partial_courses = {
-            COURSE_PROGRAMS_CACHE_KEY_TPL.format(course_run_id=course['key']):
-            [pu['uuid'] for pu in course['programs']]
-            for course in self.course_runs[:2]
-        }
-
         self.mock_list()
+        # Only mock out the first page of courses. Pages 2 and 3 will be missing.
+        self.mock_courses(self.course_runs[:10], page_number=1, final=False)
 
         with self.assertRaises(CommandError) as context:
             call_command('cache_programs')
