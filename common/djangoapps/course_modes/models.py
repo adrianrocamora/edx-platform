@@ -171,6 +171,9 @@ class CourseMode(models.Model):
     # Modes that allow a student to earn credit with a university partner
     CREDIT_MODES = [CREDIT_MODE, MASTERS]
 
+    # Modes to which learners cannot be enrolled
+    UNSELECTABLE_MODES = [CREDIT_MODE]
+
     # Modes that are eligible to purchase credit
     CREDIT_ELIGIBLE_MODES = [VERIFIED, PROFESSIONAL, NO_ID_PROFESSIONAL_MODE]
 
@@ -365,7 +368,7 @@ class CourseMode(models.Model):
             if course is not None and hasattr(course, 'selectable_modes'):
                 found_course_modes = course.selectable_modes
             else:
-                found_course_modes = found_course_modes.exclude(mode_slug__in=cls.CREDIT_MODES)
+                found_course_modes = found_course_modes.exclude(mode_slug__in=cls.UNSELECTABLE_MODES)
 
         modes = ([mode.to_tuple() for mode in found_course_modes])
         if not modes:
